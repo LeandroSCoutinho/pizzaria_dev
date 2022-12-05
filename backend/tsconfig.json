@@ -10,6 +10,9 @@
       "dom",
       "es2015.promise",
       "es5"
+    ],
+    "typeRoots": [
+      "./src/@types"
     ]
   }
 }
