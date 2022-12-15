@@ -45,8 +45,8 @@ export default function SignUp() {
           </Button>
         </form>
 
-        <Link href="/" className={styles.text}>
-           Já possui uma conta? Faça login!
+        <Link href="/"  legacyBehavior>
+           <a className={styles.text}> Já possui uma conta? Faça login! </a>
         </Link>
 
 
