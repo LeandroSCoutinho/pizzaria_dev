@@ -1,60 +1,67 @@
-import { Router } from "express";
+import { Router } from 'express';
+import multer from 'multer';
 
-import multer from "multer";
+import { CreateUserController } from './controllers/user/CreateUserController'
+import { AuthUserController } from './controllers/user/AuthUserController'
+import { DetailuserController } from './controllers/user/DetailUserController'
 
-import { CreateUserController } from "./controllers/user/CreateUserController";
-import { AuthUserController } from './controllers/user/AuthUserController';
-import { DetailuserController } from "./controllers/user/DetailUserController";
-import { CreateCategoryController } from "./controllers/category/CreateCategoryController"
-import { ListCategoryController } from "./controllers/category/ListCategoryController";
-import { CreateProductController } from "./controllers/product/CreateProductController";
+import { CreateCategoryController } from './controllers/category/CreateCategoryController'
+import { ListCategoryController } from './controllers/category/ListCategoryController'
 
-import { isAuthenticated } from "./middlewares/isAuthenticated";
+import { CreateProductController } from './controllers/product/CreateProductController'
+import { ListByCategoryController } from './controllers/product/ListByCategoryController'
 
-import uploadConfig from "./config/multer";
-import { ListByCategoryController } from "./controllers/product/ListByCategoryController";
-import { CreateOrderController } from "./controllers/order/CreateOrderController";
-import { RemoveOrderController } from "./controllers/order/RemoveOrderController";
-import { AddItemController } from "./controllers/order/AddItemController";
-import { RemoveItemController } from "./controllers/order/RemoveItemController";
-import { SendOrderController } from "./controllers/order/SendOrderController";
-import { ListOrderController } from "./controllers/order/ListOrderController";
-import { DetailsOrderController } from "./controllers/order/DetailsOrderController";
-import { FinishOrderController } from "./controllers/order/FinishOrderControllera";
+import { CreateOrderController } from './controllers/order/CreateOrderController'
+import { RemoveOrderController } from './controllers/order/RemoveOrderController'
+
+import { AddItemController } from './controllers/order/AddItemController'
+import { RemoveItemController } from './controllers/order/RemoveItemController'
+import { SendOrderController } from './controllers/order/SendOrderController'
+
+import { ListOrdersController } from './controllers/order/ListOrdersController'
+import { DetailOrderController } from './controllers/order/DetailOrderController'
+import { FinishOrderController } from './controllers/order/FinishOrderController'
+
+
+import { isAuthenticated } from './middlewares/isAuthenticated'
+
+import uploadConfig from './config/multer'
 
 const router = Router();
 
 const upload = multer(uploadConfig.upload("./tmp"));
 
 //-- ROTAS USER --
-router.post("/users", new CreateUserController().handle);
+router.post('/users', new CreateUserController().handle)
 
-router.post("/session", new AuthUserController().handle);
+router.post('/session', new AuthUserController().handle)
 
-router.get("/me", isAuthenticated, new DetailuserController().handle);
+router.get('/me', isAuthenticated,  new DetailuserController().handle )
+
 //-- ROTAS CATEGORY
-router.post('/category', isAuthenticated, new CreateCategoryController().handle );
+router.post('/category', isAuthenticated, new CreateCategoryController().handle )
 
-router.get("/category", isAuthenticated, new ListCategoryController().handle);
-//-- ROTA PRODUCT
-router.post("/product", isAuthenticated, upload.single("file"), new CreateProductController().handle );
+router.get('/category', isAuthenticated, new ListCategoryController().handle )
 
-router.get("/category/product", isAuthenticated, new ListByCategoryController().handle);
-//-- ROTA ORDER
-router.post("/order", isAuthenticated, new CreateOrderController().handle);
+//-- ROTAS PRODUCT
+router.post('/product', isAuthenticated, upload.single('file'), new CreateProductController().handle )
 
-router.delete("/order", isAuthenticated, new RemoveOrderController().handle);
-//-- OREDER ITEM
-router.post("/order/add", isAuthenticated, new AddItemController().handle);
- 
-router.delete("/order/remove", isAuthenticated, new RemoveItemController().handle );
+router.get('/category/product', isAuthenticated, new ListByCategoryController().handle )
 
-router.put("/order/send", isAuthenticated, new SendOrderController().handle);
+//-- ROTAS ORDER
+router.post('/order', isAuthenticated, new CreateOrderController().handle )
+router.delete('/order', isAuthenticated, new RemoveOrderController().handle )
 
-router.get("/orders", isAuthenticated, new ListOrderController().handle);
+router.post('/order/add', isAuthenticated, new AddItemController().handle )
+router.delete('/order/remove', isAuthenticated, new RemoveItemController().handle )
 
-router.get("/order/detail",isAuthenticated, new DetailsOrderController().handle);
- 
-router.put("/order/finish", isAuthenticated, new FinishOrderController().handle);
+router.put('/order/send', isAuthenticated, new SendOrderController().handle )
 
-export { router };
+router.get('/orders', isAuthenticated, new ListOrdersController().handle )
+router.get('/order/detail', isAuthenticated, new DetailOrderController().handle )
+
+router.put('/order/finish', isAuthenticated, new FinishOrderController().handle )
+
+
+
+export { router }; 

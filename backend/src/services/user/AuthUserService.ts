@@ -1,7 +1,7 @@
 
 import prismaClient from "../../prisma";
-import { compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { compare } from 'bcryptjs'
+import { sign } from 'jsonwebtoken'
 
 interface AuthRequest{
   email: string;
@@ -30,7 +30,7 @@ class AuthUserService{
     }
 
 
-    // Se deu tudo certo vamos gerar o token pro usuário.
+    // Se deu tudo certo vamos gerar o token pro usuario.
     const token = sign(
       {
         name: user.name,
@@ -42,6 +42,8 @@ class AuthUserService{
         expiresIn: '30d'
       }
     )
+
+
     return { 
       id: user.id,
       name: user.name,
