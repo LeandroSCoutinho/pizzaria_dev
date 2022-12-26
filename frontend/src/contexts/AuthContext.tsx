@@ -4,6 +4,7 @@ import { api } from '../services/apiClient';
 
 import { destroyCookie, setCookie, parseCookies } from 'nookies'
 import Router from 'next/router';
+import {toast } from 'react-toastify';
 
 
 type AuthContextData = {
@@ -43,7 +44,8 @@ export function signOut(){
     destroyCookie(undefined, '@nextauth.token')
     Router.push('/')
   }catch{
-    console.log('erro ao deslogar')
+    toast.error("ERRO AO DESLOGAR!");
+    console.log('erro ao deslogar');
   }
 }
 
@@ -73,32 +75,34 @@ export function AuthProvider({ children }: AuthProviderProps){
       })
 
       //Passar para proximas requisiçoes o nosso token
-      api.defaults.headers['Authorization'] = `Bearer ${token}`
+      api.defaults.headers[Authorization] = `Bearer ${token}`
 
       //Redirecionar o user para /dashboard
       Router.push('/dashboard')
 
 
     }catch(err){
-      console.log("ERRO AO ACESSAR ", err)
+      toast.error("ERRO AO ACESSAR ");
+    
     }
   }
 
 
   async function signUp({ name, email, password}: SignUpProps){
-    console.log(name);
     try{
+      
       const response = await api.post('/users', {
         name,
         email,
         password
       })
 
-      console.log("CADASTRADO COM SUCESSO!")
+      toast.success("CADASTRO EFETUADO COM SUCESSO!");
 
       Router.push('/')
 
     }catch(err){
+      toast.error("ERRO AO CADASTRAR!");
       console.log("erro ao cadastrar ", err)
     }
   }

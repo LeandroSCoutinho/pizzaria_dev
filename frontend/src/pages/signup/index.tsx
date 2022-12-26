@@ -4,6 +4,8 @@ import Head from 'next/head'
 import Image from 'next/image';
 import styles from '../../../styles/home.module.scss';
 
+import { toast } from 'react-toastify';
+
 import logoImg from '../../../public/logo.svg';
 
 import { Input } from '../../components/ui/Input'
@@ -26,7 +28,7 @@ export default function SignUp() {
     event.preventDefault();
 
     if(name === '' || email === '' || password === ''){
-      alert("PREENCHA TODOS OS CAMPOS")
+      toast.warn("PREENCHA TODOS OS CAMPOS");
       return;
     }
 
