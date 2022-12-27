@@ -13,7 +13,7 @@ export function setupAPIClient(ctx = undefined){
       Authorization: `Bearer ${cookies['@nextauth.token']}`
     }
   })
- 
+
   api.interceptors.response.use(response => {
     return response;
   }, (error: AxiosError) => {
