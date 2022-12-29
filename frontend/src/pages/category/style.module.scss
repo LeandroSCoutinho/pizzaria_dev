@@ -1,8 +1,9 @@
 .container{
     max-width: 720px;
+    margin: 4rem auto;
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
+    justify-content: space-between;
 }
 .container h1{
     color: var(--white);
@@ -21,6 +22,7 @@
     height: 40px;
     padding: 1rem;
     color: var(--white);
+    border:1px solid var(--gray-100);
 }
 .buttonAdd{
     background-color: var(--green-900);
@@ -30,5 +32,4 @@
     font-size: 1.2rem;
     font-weight: bold;
     height: 40px;
-
 }
