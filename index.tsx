@@ -5,10 +5,9 @@ import { canSSRAuth } from '../../utils/canSSRAuth'
 import { Header } from '../../components/Header'
 import { FiUpload } from 'react-icons/fi'
 
-import { useState, ChangeEvent, FormEvent } from 'react'
+import { useState, ChangeEvent } from 'react'
 
 import { setupAPIClient } from '../../services/api'
-import { toast } from 'react-toastify'
 
 type ItemProps = {
     id: string;
@@ -19,11 +18,6 @@ interface CotegoryProps{
 }
 
 export default function Product({categoryList}: CategoryProps){
-    
-    const [name, setName] = useState('');
-    const [price, setPrice] = useState('');
-    const [description, setDescription] = useState('');
-
 
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState(null);
@@ -51,43 +45,9 @@ export default function Product({categoryList}: CategoryProps){
     }
 
     //Quando você seleciona uma nova categoria  na lista
-    function handleChangeCategory(event: FormEvent){
+    function handleChangeCategory(event){
         setCategorySelected(event.target.value);
     }
-    
-    async function handleRegister(event: FormEvent){
-        event.preventDefault();
-        try{
-            const data = new FormData();
-
-            if(name === '' || price === '' || description === '' || imageAvatar === null){
-                toast.error('Preencha todos os campos!');
-                return;
-            }
-
-            data.append('name',name);
-            data.append('price',price);
-            data.append('description', description);
-            data.append('category_id', categories[categorySelected].id);
-            data.append('file', imageAvatar);
-
-            const apiClient = setupAPIClient();
-
-            await apiClient.post('/product', data);
-
-            toast.success('Produto cadastrado com sucesso!');
-
-        }catch(error){
-            toast.error('Não foi possível cadastrar o produto!');
-        }
-
-        setName('');
-        setPrice('');
-        setDescription('');
-        setImageAvatar(null);
-        setAvatarUrl('');
-    } 
-
     return(
         <>
             <Head>
@@ -99,7 +59,7 @@ export default function Product({categoryList}: CategoryProps){
                 <main className={styles.container}>
                     <h1>Novo produto</h1>
 
-                    <form className={styles.form} onSubmit={handleRegister}>
+                    <form className={styles.form}>
                         <label className={styles.labelAvatar}>
                             <span>
                                 <FiUpload size={30} color="#FFF" />
@@ -118,7 +78,6 @@ export default function Product({categoryList}: CategoryProps){
                                     alt="Foto do produto"
                                     width={250}
                                     height={250}
-
                                 />
                             )}
                         </label>
@@ -137,23 +96,17 @@ export default function Product({categoryList}: CategoryProps){
                             type="text"
                             placeholder="Digite o nome do produto"
                             className={styles.input}
-                            value={name}
-                            onChange={(e) =>setName(e.target.value)}
                         />
 
                         <input
                             type="text"
                             placeholder="Preço do produto"
                             className={styles.input}
-                            value={price}
-                            onChange={(e)=>setPrice(e.target.value)}
                         />
 
                         <textarea
                             className={styles.input}
                             placeholder="Descreva seu produto..."
-                            value={description}
-                            onChange={(e)=>setDescription(e.target.value)}
                         ></textarea>
 
                         <button
@@ -174,6 +127,8 @@ export const getServerSideProps = canSSRAuth(async (ctx) =>{
     const apiClient = setupAPIClient(ctx);
 
     const response = await apiClient.get('/category');
+
+    console.log(response.data);
 
     return {
         props:{
