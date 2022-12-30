@@ -68,9 +68,7 @@ export default function Dashboard({ orders }: HomeProps){
 
      setModalItem(response.data);
      setModalVisible(true);
-
   }
-
 
   Modal.setAppElement('#__next');
 
@@ -108,7 +106,9 @@ export default function Dashboard({ orders }: HomeProps){
 
       { modalVisible && (
         <ModalOrder
-        
+          isOpen= {modalVisible}
+          onRequestClose={handleCloseModal}
+          order={modalItem}
         />
       )}
 
