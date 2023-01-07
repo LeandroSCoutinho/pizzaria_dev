@@ -11,18 +11,18 @@ import {
 import {AuthContext} from '../../context/AuthContext';
 
 export default function SignIn(){
- const {user} =useContext(AuthContext)
+ const { singIn } =useContext(AuthContext)
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
 
-  function handleLogin(){
+   async function handleLogin(){
     if(email === ''|| password === ''){
       return;
     }
 
-    console.log('Teste!');
+    await singIn({email,password});
   }
   return(
     <View style={styles.container}>
