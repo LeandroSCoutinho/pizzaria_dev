@@ -1,25 +1,29 @@
 import React, { useContext } from 'react';
 
-import {ActivityIndicator, View} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 
 import AppRoutes from './app.routes';
 import AuthRoutes from './auth.routes';
 
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../contexts/AuthContext'
 
 function Routes(){
   const { isAuthenticated, loading } = useContext(AuthContext);
 
 
   if(loading){
-    <View style={{
-     flex:1,
-     backgroundColor:'#F5F7FB',
-     justifyContent: 'center',
-     alignItems: 'center'
-     }}>
-      <ActivityIndicator size={60} color="#FFF"/>
-    </View>
+    return(
+      <View 
+        style={{ 
+          flex:1, 
+          backgroundColor: '#1D1D2E', 
+          justifyContent: 'center', 
+          alignItems:'center' 
+        }}
+      >
+        <ActivityIndicator size={60} color="#FFF" />
+      </View>
+    )
   }
 
 
