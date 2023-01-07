@@ -1,4 +1,4 @@
-import React, {useState, createContext, ReactNode} from "react";
+import React, {useState, createContext, ReactNode, useEffect} from "react";
 import { api } from "../services/api";
 
 import  AsyncStorage  from '@react-native-async-storage/async-storage';
@@ -7,6 +7,9 @@ type AuthContextData = {
     user: UserProps;
     isAuthenticated: boolean;
     singIn: (credential: SignInProps) => Promise<void>;
+    loading: boolean;
+    loadingAuth: boolean;
+    singOut: () => Promise<void>;    
 }
 
 type UserProps = {
@@ -33,11 +36,38 @@ export function AuthProvider({children}: AuthProviderProps){
         email: '',
         token: ''
     })
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true);
+    const [loadingAuth, setLoadingAuth] = useState(false)
     const isAuthenticated = !!user.name;
 
+    useEffect(()=>{
+
+        async function getUser(){
+            //Pegar os dados salvos do user
+            const useInfo = await AsyncStorage.getItem('sujeitopizzaria');
+            let hasUser: UserProps = JSON.parse(useInfo || '{}');
+    
+            if(Object.keys(hasUser).length > 0){
+                api.defaults.headers.common['Authorization'] = `Bearer ${hasUser.token}`;
+            
+                setUser({
+                    id: hasUser.id,
+                    name: hasUser.name,
+                    email: hasUser.email,
+                    token: hasUser.token
+                })
+            }
+
+            setLoading(false);
+
+        }
+
+        getUser();
+
+    },[]);
+
     function signIn({email, password}: SignInProps){
-        setLoading(true);
+        setLoadingAuth(true);
         try {
            const response = await api.post('/session',{
             email,
@@ -52,6 +82,7 @@ export function AuthProvider({children}: AuthProviderProps){
 
            await AsyncStorage.setItem('@sujeitopizzaria', JSON.stringify(data))
 
+
            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
            setUser({
             id,
@@ -62,12 +93,23 @@ export function AuthProvider({children}: AuthProviderProps){
            
         } catch (err) {
             console.log('erro ao acessar', err)
-            setLoading(false);
+            setLoadingAuth(false);
         }
     }
 
+    async function singOut(){
+        await AsyncStorage.clear();
+
+        setUser({
+            id: '',
+            name: '',
+            email: '',
+            token: ''
+        });
+    }
+
     return(
-        <AuthContext.Provider value={{user, isAuthenticated, signIn}}>
+        <AuthContext.Provider value={{user, isAuthenticated, signIn, loading, loadingAuth,singOut}}>
            {children}
         </AuthContext.Provider>
     )
