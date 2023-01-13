@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackPromsList } from '../../routes/app.routes';
+import { api } from '../../services/api';
 
 export default function Dashboard(){
   const navigation = useNavigation<NativeStackNavigationProp<StackPromsList>>();
@@ -16,7 +17,14 @@ export default function Dashboard(){
       return;
     }
 
-    navigation.navigate('Order',{number: number, order_id:'????'});
+  const response = await api.post('/order',{
+    table: Number(number)
+  })
+
+  navigation.navigate('Order',{number: number, order_id: response.data.id});
+
+  setNumber('');
+
   }
   return(
     <SafeAreaView style={styles.container}>
