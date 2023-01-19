@@ -90,6 +90,10 @@ export default function Order(){
     function handleChangeCategory(item: CategoryProps){
         setCategorySelected(item)
     }
+
+    function handleChangeProduct(item: ProductProps){
+        setProductSelected(item);
+    }
     return(
         <View style={styles.container}>
             
@@ -141,13 +145,28 @@ export default function Order(){
             <Modal 
                 transparent={true}
                 visible={modalCategoryVisible}
+                animationType="fade"
             >
-                <ModalPicker
+            <ModalPicker
                     handleCloseModal={ () => setModalCategoryVisible(false)}
                     options={category}
                     selectedItem={ handleChangeCategory}
                 />
             </Modal>
+
+            <Modal 
+                transparent={true}
+                visible={modalProductVisible}
+                animationType="fade"
+            />
+
+             <ModalPicker
+                handleCloseModal={ () => setModalProducVisible(false)}
+                options={products}
+                selectedItem={ handleChangeProduct}
+            />
+
+            
 
         </View>
     )
