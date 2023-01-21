@@ -15,6 +15,7 @@ import { ModalPicker } from '../../components/ModalPicker';
 
 import api from '../../services/api';
 import { ListItem } from '../../components/ListItem';
+import { responseEncoding } from 'axios';
 
 type RouteDetailParams = {
     Order: {
@@ -107,16 +108,32 @@ export default function Order(){
     }
 
     function handleItem(){
-        alert('Click!');
+        const response = await api.get('/order/add',{
+            order_id: route.params?.order_id,
+            product_id: productSelected?.id,
+            amount: Number(amount)
+        });
+
+        let data = {
+            id: response.data.id,
+            product_id: productSelected?id as string,
+            name: productSelected?.name as string,
+            amount: amount
+        }
+
+        setItems(oldArray =>[ ...oldArray, data])
     }
     return(
         <View style={styles.container}>
             
             <View style={styles.header}>
                 <Text style={styles.title}>Mesa {route.params.number}</Text>
-                <TouchableOpacity onPress={handleCloseOrder}>
-                    <Feather name="trash-2" size={28} color="#FF3F4B" />
-                </TouchableOpacity>
+
+                {items.length === 0 && (
+                    <TouchableOpacity onPress={handleCloseOrder}>
+                       <Feather name="trash-2" size={28} color="#FF3F4B" />
+                    </TouchableOpacity>
+                )}
             </View>
 
            {category.length !== 0 && (
@@ -166,7 +183,6 @@ export default function Order(){
                 data={items}
                 keyExtractor={(item) => item.id}
                 renderItem={ ({item})=> <ListItem data={item} />}
-
             />
 
             <Modal 
@@ -178,7 +194,7 @@ export default function Order(){
                     handleCloseModal={ () => setModalCategoryVisible(false)}
                     options={category}
                     selectedItem={ handleChangeCategory}
-                />
+            />
             </Modal>
 
             <Modal 
@@ -192,8 +208,6 @@ export default function Order(){
                 options={products}
                 selectedItem={ handleChangeProduct}
             />
-
-            
 
         </View>
     )
