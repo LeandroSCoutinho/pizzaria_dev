@@ -10,11 +10,13 @@ import {
 
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 
+import api from '../../services/api';
 import { Feather } from '@expo/vector-icons';
 import { ModalPicker } from '../../components/ModalPicker';
-
-import api from '../../services/api';
 import { ListItem } from '../../components/ListItem';
+
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackPromsList } from '../../routes/app.routes';
 
 
 type RouteDetailParams = {
@@ -45,7 +47,7 @@ type OrderRouteProps = RouteProp<RouteDetailParams, 'Order'>;
 export default function Order(){
 
     const route = useRoute<OrderRouteProps>();
-    const navigation = useNavigation();
+    const navigation = useNavigation<NativeStackNavigationProp<StackPromsList>>();
 
     const [category, setCategory] = useState<CategoryProps[] | []>([]);
     const [categorySelected, setCategorySelected] = useState<CategoryProps>();
@@ -137,6 +139,10 @@ export default function Order(){
 
         setItems(removeItem)
     }
+
+    function HandleFinishOrder(){
+        navigation.navigate("FinishOrder");
+    }
     return(
         <View style={styles.container}>
             
@@ -186,6 +192,7 @@ export default function Order(){
                 <TouchableOpacity 
                     style={[styles.button, {opacity: DataTransferItemList.length === 0 ? 0.3 : 1}]}
                     disabled={items.length === 0}
+                    onPress={HandleFinishOrder}
                     >
                     <Text style={styles.buttonText}>Avançar</Text>
                 </TouchableOpacity>
