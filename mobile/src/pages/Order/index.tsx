@@ -8,7 +8,7 @@ import {
     TextInput, 
     FlatList} from 'react-native';
 
-import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation, TabRouter } from '@react-navigation/native';
 
 import api from '../../services/api';
 import { Feather } from '@expo/vector-icons';
@@ -141,7 +141,10 @@ export default function Order(){
     }
 
     function HandleFinishOrder(){
-        navigation.navigate("FinishOrder");
+        navigation.navigate("FinishOrder",{
+            number: route.params?.number,
+            order_id: route.params?.order_id
+        });
     }
     return(
         <View style={styles.container}>
