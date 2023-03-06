@@ -1,2 +1,2 @@
 # pizzaria_dev
-Projeto que simula o atendimento de uma pizzaria.
+Projeto que simula um App de atendimento de uma pizzaria.
