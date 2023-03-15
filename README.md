@@ -20,16 +20,24 @@ Criação de categorias e produtos
 Para rodar o projeto localmente, é necessário ter o Node.js instalado em sua máquina. Em seguida, siga os passos abaixo:  
 
 ## Clone o repositório em sua máquina:
-git clone https://github.com/seu-username/pizzaria_dev.git  
+```bash
+git clone https://github.com/seu-username/pizzaria_dev.git
+```
 
-Entre na pasta do projeto:  
+Entre na pasta do projeto: 
+```bash
 cd pizzaria_dev  
+```
 
 Instale as dependências do projeto:  
+```bash
 npm install 
+```
 
 Rode o projeto:  
+```bash
 npm start  
+```
 
 O projeto estará disponível no endereço http://localhost:3000.  
 
